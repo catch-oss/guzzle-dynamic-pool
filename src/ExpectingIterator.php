@@ -8,18 +8,15 @@ namespace AlexS\GuzzleDynamicPool;
 // Do not extend IteratorIterator, because it cashes the return values somehow!
 class ExpectingIterator implements \Iterator
 {
-    /**
-     * @var \Iterator
-     */
-    private $inner;
-    private $wasValid;
+    private \Iterator $inner;
+    private bool $wasValid = false;
 
     public function __construct(\Iterator $inner)
     {
         $this->inner = $inner;
     }
 
-    public function next():void
+    public function next(): void
     {
         if (!$this->wasValid && $this->valid()) {
             // Just do nothing, because the inner iterator has became valid
@@ -30,24 +27,24 @@ class ExpectingIterator implements \Iterator
         $this->wasValid = $this->valid();
     }
 
-    public function current()
+    public function current(): mixed
     {
         return $this->inner->current();
     }
 
-    public function rewind():void
+    public function rewind(): void
     {
         $this->inner->rewind();
 
         $this->wasValid = $this->valid();
     }
 
-    public function key()
+    public function key(): mixed
     {
         return $this->inner->key();
     }
 
-    public function valid():bool
+    public function valid(): bool
     {
         return $this->inner->valid();
     }

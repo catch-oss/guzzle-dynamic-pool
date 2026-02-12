@@ -7,30 +7,24 @@ use Psr\Http\Message\ResponseInterface;
 
 class PageReceiver
 {
-    /** @var TransferStats */
-    private $stats;
+    private TransferStats $stats;
+    private ResponseInterface $response;
+    private string $html;
+    private int $currentLevel;
 
-    /** @var ResponseInterface */
-    private $response;
-
-    /** @var string */
-    private $html;
-
-    private $currentLevel;
-
-    public function __construct($currentLevel)
+    public function __construct(int $currentLevel)
     {
         $this->currentLevel = $currentLevel;
     }
 
-    public function onStats()
+    public function onStats(): \Closure
     {
-        return function (TransferStats $stats) {
+        return function (TransferStats $stats): void {
             $this->stats = $stats;
         };
     }
 
-    public function __invoke(ResponseInterface $response)
+    public function __invoke(ResponseInterface $response): self
     {
         $this->response = $response;
 
@@ -45,7 +39,7 @@ class PageReceiver
         return $this;
     }
 
-    public function generatePage()
+    public function generatePage(): Page
     {
         return new Page($this->currentLevel, $this->response, $this->html, $this->stats);
     }

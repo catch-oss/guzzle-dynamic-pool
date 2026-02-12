@@ -5,14 +5,7 @@ namespace AlexS\GuzzleDynamicPool;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Promise\Each;
 
-/**
- * @param iterable $initialWorkload
- * @param callable $handler
- * @param int $concurrency
- *
- * @return PromiseInterface
- */
-function dynamic_pool($initialWorkload, $handler, $concurrency = 10)
+function dynamic_pool(iterable $initialWorkload, callable $handler, int $concurrency = 10): PromiseInterface
 {
     $workload = new \ArrayIterator();
     foreach ($initialWorkload as $item) {
