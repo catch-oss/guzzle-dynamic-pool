@@ -16,7 +16,6 @@ class Scraper
     /** @var list<string> */
     private array $domains;
     private Client $httpClient;
-    /** @var callable */
     private \Closure $onPage;
 
     public function __construct(array $domains, Client $httpClient, callable $onPage)
@@ -44,7 +43,7 @@ class Scraper
         }
 
         // Is the nesting level OK?
-        if ($level > $this->maxLevel) {
+        if ($this->maxLevel !== null && $level > $this->maxLevel) {
             // Some message or event?..
             return new FulfilledPromise(null);
         }

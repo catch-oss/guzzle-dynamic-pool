@@ -8,7 +8,7 @@ namespace AlexS\GuzzleDynamicPool;
 // Do not extend IteratorIterator, because it cashes the return values somehow!
 class ExpectingIterator implements \Iterator
 {
-    private \Iterator $inner;
+    private readonly \Iterator $inner;
     private bool $wasValid = false;
 
     public function __construct(\Iterator $inner)

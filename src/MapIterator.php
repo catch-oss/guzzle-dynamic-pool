@@ -11,9 +11,8 @@ use Closure;
 // Do not extend IteratorIterator, because it cashes the return values somehow!
 class MapIterator implements \Iterator
 {
-    private ArrayIterator $inner;
-    /** @var callable */
-    private Closure $handler;
+    private readonly ArrayIterator $inner;
+    private readonly Closure $handler;
 
     public function __construct(ArrayIterator $inner, callable $handler)
     {

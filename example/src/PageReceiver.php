@@ -7,10 +7,10 @@ use Psr\Http\Message\ResponseInterface;
 
 class PageReceiver
 {
-    private TransferStats $stats;
+    private ?TransferStats $stats = null;
     private ResponseInterface $response;
     private string $html;
-    private int $currentLevel;
+    private readonly int $currentLevel;
 
     public function __construct(int $currentLevel)
     {
