@@ -4,46 +4,33 @@ namespace AlexS\GuzzleDynamicPool\Example;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise\FulfilledPromise;
+use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Uri;
 use Stringy\StaticStringy;
 
 class Scraper
 {
-    private $processedUrls = [];
+    /** @var list<string> */
+    private array $processedUrls = [];
+    private ?int $maxLevel = null;
+    /** @var list<string> */
+    private array $domains;
+    private Client $httpClient;
+    private \Closure $onPage;
 
-    /** @var int */
-    private $maxLevel = null;
-
-    /** @var array */
-    private $domains;
-
-    /** @var Client */
-    private $httpClient;
-
-    /** @var callable */
-    private $onPage;
-
-    /**
-     * @param array    $domains
-     * @param Client   $httpClient
-     * @param callable $onPage
-     */
     public function __construct(array $domains, Client $httpClient, callable $onPage)
     {
         $this->domains = $domains;
         $this->httpClient = $httpClient;
-        $this->onPage = $onPage;
+        $this->onPage = $onPage(...);
     }
 
-    /**
-     * @param int $maxLevel
-     */
-    public function setMaxLevel($maxLevel)
+    public function setMaxLevel(?int $maxLevel): void
     {
         $this->maxLevel = $maxLevel;
     }
 
-    public function __invoke($urlEntry, \ArrayIterator $workload)
+    public function __invoke(mixed $urlEntry, \ArrayIterator $workload): PromiseInterface
     {
         list($url, $level) = $urlEntry;
 
@@ -56,7 +43,7 @@ class Scraper
         }
 
         // Is the nesting level OK?
-        if ($level > $this->maxLevel) {
+        if ($this->maxLevel !== null && $level > $this->maxLevel) {
             // Some message or event?..
             return new FulfilledPromise(null);
         }

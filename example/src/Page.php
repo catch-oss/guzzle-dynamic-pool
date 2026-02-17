@@ -8,27 +8,13 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class Page
 {
-    private $level;
+    private int $level;
+    private TransferStats $stats;
+    private Crawler $domCrawler;
+    private string $html;
+    private ResponseInterface $response;
 
-    /** @var TransferStats */
-    private $stats;
-
-    /** @var Crawler */
-    private $domCrawler;
-
-    /** @var string */
-    private $html;
-
-    /** @var ResponseInterface */
-    private $response;
-
-    /**
-     * @param int $level
-     * @param ResponseInterface $response
-     * @param string $html
-     * @param TransferStats $stats
-     */
-    public function __construct($level, ResponseInterface $response, $html, TransferStats $stats)
+    public function __construct(int $level, ResponseInterface $response, string $html, TransferStats $stats)
     {
         $this->level = $level;
         $this->stats = $stats;
@@ -38,23 +24,20 @@ class Page
         $this->domCrawler = new Crawler($html, $this->getEffectiveUrl());
     }
 
-    public function getLevel()
+    public function getLevel(): int
     {
         return $this->level;
     }
 
-    /**
-     * @return TransferStats
-     */
-    public function getStats()
+    public function getStats(): TransferStats
     {
         return $this->stats;
     }
 
     /**
-     * @return Generator string[]
+     * @return \Generator<string>
      */
-    public function getLinks()
+    public function getLinks(): \Generator
     {
         $links = $this->domCrawler->filterXPath('//a')->links();
         foreach ($links as $link) {
@@ -63,20 +46,17 @@ class Page
         }
     }
 
-    public function getEffectiveUrl()
+    public function getEffectiveUrl(): string
     {
-        return $this->stats->getEffectiveUri();
+        return (string) $this->stats->getEffectiveUri();
     }
 
-    public function getStatusCode()
+    public function getStatusCode(): int
     {
         return $this->response->getStatusCode();
     }
 
-    /**
-     * @return string
-     */
-    public function getContent()
+    public function getContent(): string
     {
         return $this->html;
     }

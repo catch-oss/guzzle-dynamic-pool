@@ -1,5 +1,6 @@
 # Guzzle Dynamic Pool
 
+A small helper to use dynamic request pools in Guzzle.
 <!-- PROJECT SHIELDS -->
 [![SonarCloud](https://github.com/catch-oss/guzzle-dynamic-pool/actions/workflows/sonar.yml/badge.svg)](https://github.com/catch-oss/guzzle-dynamic-pool/actions/workflows/sonar.yml)
 [![Test](https://github.com/catch-oss/guzzle-dynamic-pool/actions/workflows/test.yml/badge.svg)](https://github.com/catch-oss/guzzle-dynamic-pool/actions/workflows/test.yml)
@@ -16,3 +17,10 @@
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=catch-design_catch-oss-guzzle-dynamic-pool&metric=vulnerabilities)](https://sonarcloud.io/component_measures?id=catch-design_catch-oss-guzzle-dynamic-pool)
 
 See [this StackOverflow topic](https://stackoverflow.com/a/43525426/322079) for details.
+
+## Compatibility
+
+| Branch | PHP |
+|---------|-----|
+| release/6 | ^8.5 |
+| release/5 | ~8.1 |
