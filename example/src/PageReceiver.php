@@ -42,7 +42,10 @@ class PageReceiver
     public function generatePage(): Page
     {
         if ($this->stats === null) {
-            throw new \RuntimeException('Transfer stats not available - ensure onStats callback has been executed');
+            throw new \BadMethodCallException(
+                'Cannot generate page: transfer stats unavailable. '
+                . 'Ensure the HTTP request completes before calling generatePage().'
+            );
         }
 
         return new Page($this->currentLevel, $this->response, $this->html, $this->stats);
